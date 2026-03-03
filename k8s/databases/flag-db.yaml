@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flag-db-secret
+  namespace: tech-challenge-db
+type: Opaque
+data:
+  # postgres-password: flag
+  password: ZmxhZw==
+  # username: flag
+  username: ZmxhZw==
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flag-db-init
+  namespace: tech-challenge-db
+data:
+  init.sql: |
+    -- Consulte o arquivo db/init.sql da pasta flag-service
+    -- Este é um espaço reservado para seus scripts de inicialização
+    CREATE TABLE IF NOT EXISTS flags (
+      id SERIAL PRIMARY KEY,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flag-db
+  namespace: tech-challenge-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flag-db
+  template:
+    metadata:
+      labels:
+        app: flag-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: flag-db-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: flag-db-secret
+                  key: password
+            - name: POSTGRES_DB
+              value: flagdb
+          
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U flag
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U flag
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          
+          volumeMounts:
+            - name: flag-db-storage
+              mountPath: /var/lib/postgresql/data
+            - name: init-scripts
+              mountPath: /docker-entrypoint-initdb.d
+      
+      volumes:
+        - name: flag-db-storage
+          emptyDir: {}
+        - name: init-scripts
+          configMap:
+            name: flag-db-init
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flag-db
+  namespace: tech-challenge-db
+spec:
+  selector:
+    app: flag-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP

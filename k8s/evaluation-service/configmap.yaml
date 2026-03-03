@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: evaluation-service-config
+  namespace: tech-challenge
+data:
+  PORT: "8000"
+  LOG_LEVEL: "info"
+  AWS_REGION: "us-east-1"
+  AWS_SQS_URL: "http://localstack:4566/000000000000/queue"
+  FLAG_SERVICE_URL: "http://flag-service.tech-challenge.svc.cluster.local:8000"
+  TARGETING_SERVICE_URL: "http://targeting-service.tech-challenge.svc.cluster.local:8000"

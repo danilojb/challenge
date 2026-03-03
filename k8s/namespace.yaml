@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tech-challenge
+  labels:
+    name: tech-challenge
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tech-challenge-db
+  labels:
+    name: tech-challenge-db
