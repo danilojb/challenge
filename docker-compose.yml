@@ -1,0 +1,119 @@
+services:
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgres://auth:auth@auth-db:5432/authdb
+      - MASTER_KEY=admin-secreto-123
+      - PORT=8000
+    depends_on:
+      auth-db:
+        condition: service_healthy
+
+  flag-service:
+    build: ./flag-service
+    ports:
+      - "8002:8000"
+    environment:
+      - PORT=8000
+      - DATABASE_URL=postgres://flag:flag@flag-db:5432/flagdb
+      - AUTH_SERVICE_URL=http://auth-service:8000
+    depends_on:
+      - flag-db
+      - auth-service
+
+  targeting-service:
+    build: ./targeting-service
+    ports:
+      - "8003:8000"
+    environment:
+      - PORT=8000
+      - DATABASE_URL=postgres://target:target@target-db:5432/targetdb
+      - AUTH_SERVICE_URL=http://auth-service:8000
+    depends_on:
+      - target-db
+      - auth-service
+
+  evaluation-service:
+    build: ./evaluation-service
+    ports:
+      - "8004:8000"
+    environment:
+      - PORT=8000
+      - REDIS_URL=redis://redis:6379
+      # LocalStack settings for development; real AWS URL/creds are required in production
+      - AWS_SQS_URL=http://localstack:4566/000000000000/queue
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - FLAG_SERVICE_URL=http://flag-service:8000
+      - TARGETING_SERVICE_URL=http://targeting-service:8000
+      - SERVICE_API_KEY=tm_key_9babda464b5cc9ce83c368c30a4e048eafc0c10e19f2cd240f66e3b85176a164
+    depends_on:
+      - redis
+      - localstack
+      - flag-service
+      - targeting-service
+
+  analytics-service:
+    build: ./analytics-service
+    ports:
+      - "8005:8000"  # host:container
+    environment:
+      # Ensure the Flask app listens on the same port that Docker exposes
+      - PORT=8000
+      # Dummy AWS credentials are fine for LocalStack development
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DYNAMODB_TABLE=analytics
+      - AWS_SQS_URL=http://localstack:4566/000000000000/queue
+      - AWS_REGION=us-east-1
+    depends_on:
+      - localstack
+
+  auth-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: auth
+      POSTGRES_PASSWORD: auth
+      POSTGRES_DB: authdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U auth"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  flag-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: flag
+      POSTGRES_PASSWORD: flag
+      POSTGRES_DB: flagdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flag"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  target-db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: target
+      POSTGRES_PASSWORD: target
+      POSTGRES_DB: targetdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U target"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: dynamodb,sqs

@@ -1,0 +1,14 @@
+0000000000000000000000000000000000000000 05f83ab835bd8dfea7a6991dfae76faf6c56c6b3 Super User <root@CPU01.localdomain> 1772150437 -0300	commit (initial): Initial commit
+05f83ab835bd8dfea7a6991dfae76faf6c56c6b3 70235aabd2462c8daac9f734d0f39035543ad203 Danilo Jose Bessornia <djbessornia@hotmail.com> 1772151088 -0300	commit: Readme com as instrucoes para rodar os Microservicçoes
+70235aabd2462c8daac9f734d0f39035543ad203 57770fb225997a8501ab7ea7e81a2b0d74cbe418 Danilo Jose Bessornia <djbessornia@hotmail.com> 1772151353 -0300	commit: Readme estilizado e modificado para .MD
+57770fb225997a8501ab7ea7e81a2b0d74cbe418 f1905f67b3ef8dea68fdf4a3e10f24b379dcb739 Danilo Jose Bessornia <djbessornia@hotmail.com> 1772151391 -0300	commit: Readme estilizado e modificado para .MD
+f1905f67b3ef8dea68fdf4a3e10f24b379dcb739 4115284795cbd89431c158a0fbd1c8f791baeaed Danilo Jose Bessornia <djbessornia@hotmail.com> 1772152253 -0300	commit: Readme estilizado e modificado para .MD
+4115284795cbd89431c158a0fbd1c8f791baeaed cad7c2ff70b27002e4a4d80482f31a9429eb1d3e Danilo Jose Bessornia <djbessornia@hotmail.com> 1772152317 -0300	commit: Readme estilizado e modificado para .MD
+cad7c2ff70b27002e4a4d80482f31a9429eb1d3e cad7c2ff70b27002e4a4d80482f31a9429eb1d3e Danilo Jose Bessornia <djbessornia@hotmail.com> 1772580805 -0300	checkout: moving from main to feature/k8s
+cad7c2ff70b27002e4a4d80482f31a9429eb1d3e 894d220f00cc719c52116b3baf7077400d63ab54 Danilo Jose Bessornia <djbessornia@hotmail.com> 1772580857 -0300	commit: Primeiro commit do k8s
+894d220f00cc719c52116b3baf7077400d63ab54 cad7c2ff70b27002e4a4d80482f31a9429eb1d3e Danilo Jose Bessornia <djbessornia@hotmail.com> 1772581790 -0300	checkout: moving from feature/k8s to main
+cad7c2ff70b27002e4a4d80482f31a9429eb1d3e 894d220f00cc719c52116b3baf7077400d63ab54 Danilo Jose Bessornia <djbessornia@hotmail.com> 1772581835 -0300	checkout: moving from main to feature/k8s
+894d220f00cc719c52116b3baf7077400d63ab54 cad7c2ff70b27002e4a4d80482f31a9429eb1d3e Danilo Jose Bessornia <djbessornia@hotmail.com> 1773105196 -0300	checkout: moving from feature/k8s to main
+cad7c2ff70b27002e4a4d80482f31a9429eb1d3e df2112767d09cbcc8b16f3f84fb4c032602680b6 Danilo Jose Bessornia <djbessornia@hotmail.com> 1773105287 -0300	commit: first commit
+df2112767d09cbcc8b16f3f84fb4c032602680b6 ac90a2c698b2c30615985fa329f12cb5afadfb75 Danilo Jose Bessornia <djbessornia@hotmail.com> 1773105417 -0300	pull --no-rebase: Merge made by the 'ort' strategy.
+ac90a2c698b2c30615985fa329f12cb5afadfb75 076e290882fec166b238eee6f54a490a7bc64f7e Danilo Jose Bessornia <djbessornia@hotmail.com> 1773106136 -0300	commit: Convertendo submódulo analytics-service em pasta normal

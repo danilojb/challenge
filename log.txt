@@ -1,0 +1,6 @@
+Attaching to analytics-service-1, auth-db-1, auth-service-1, evaluation-service-1, flag-db-1, flag-service-1, localstack-1, redis-1, target-db-1, targeting-service-1
+[Kauth-service-1 exited with code 1
+[Kevaluation-service-1 exited with code 1
+[Kflag-service-1 exited with code 1
+[Kanalytics-service-1 exited with code 1
+[Ktargeting-service-1 exited with code 1
