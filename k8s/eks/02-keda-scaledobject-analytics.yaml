@@ -1,0 +1,28 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: analytics-scaledobject
+  namespace: <NAMESPACE>
+spec:
+  scaleTargetRef:
+    name: analytics-deployment              # ajuste se o nome do Deployment for diferente
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  pollingInterval: 10                       # segundos entre polls da fila
+  cooldownPeriod: 30                        # tempo para reduzir após normalizar
+  triggers:
+    - type: aws-sqs-queue
+      metadata:
+        queueURL: https://sqs.<AWS_REGION>.amazonaws.com/<AWS_ACCOUNT_ID>/<SQS_QUEUE_NAME>
+        queueLength: "5"                    # threshold para escalar
+      authenticationRef:
+        name: keda-aws-auth
+---
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: keda-aws-auth
+  namespace: <NAMESPACE>
+spec:
+  podIdentity:
+    provider: aws
