@@ -1,0 +1,9 @@
+.git
+bin/
+vendor/
+*.exe
+*.test
+*.out
+*.log
+.DS_Store
+build/
