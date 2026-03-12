@@ -28,12 +28,20 @@ if not DATABASE_URL or not AUTH_SERVICE_URL:
     sys.exit(1)
 
 # --- Pool de Conexão com o Banco ---
-try:
-    pool = SimpleConnectionPool(1, 5, dsn=DATABASE_URL)
-    log.info("Pool de conexões com o PostgreSQL (targeting) inicializado.")
-except psycopg2.OperationalError as e:
-    log.critical(f"Erro fatal ao conectar ao PostgreSQL: {e}")
+# Tenta estabelecer a conexão várias vezes, aguardando o banco ficar pronto.
+def init_pool(retries: int = 10, delay: float = 2.0):
+    for attempt in range(1, retries + 1):
+        try:
+            pool = SimpleConnectionPool(1, 5, dsn=DATABASE_URL)
+            log.info("Pool de conexões com o PostgreSQL (targeting) inicializado.")
+            return pool
+        except psycopg2.OperationalError as e:
+            log.warning(f"Não conseguiu conectar ao PostgreSQL (tentativa {attempt}/{retries}): {e}")
+            time.sleep(delay)
+    log.critical("Não foi possível conectar ao PostgreSQL após várias tentativas.")
     sys.exit(1)
+
+pool = init_pool()
 
 # --- Middleware de Autenticação (Idêntico ao flag-service) ---
 def require_auth(f):

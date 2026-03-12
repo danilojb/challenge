@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/joho/godotenv"
@@ -67,15 +68,20 @@ func main() {
 
 // connectDB inicializa e testa a conexão com o PostgreSQL
 func connectDB(databaseURL string) (*sql.DB, error) {
-	db, err := sql.Open("pgx", databaseURL)
-	if err != nil {
-		return nil, err
+	var db *sql.DB
+	var err error
+	// tenta várias vezes pois o banco pode estar em startup
+	for i := 1; i <= 10; i++ {
+		db, err = sql.Open("pgx", databaseURL)
+		if err == nil {
+			err = db.Ping()
+		}
+		if err == nil {
+			log.Println("Conectado ao PostgreSQL com sucesso!")
+			return db, nil
+		}
+		log.Printf("Tentativa %d/10 de conectar ao banco falhou: %v", i, err)
+		time.Sleep(2 * time.Second)
 	}
-
-	if err = db.Ping(); err != nil {
-		return nil, err
-	}
-
-	log.Println("Conectado ao PostgreSQL com sucesso!")
-	return db, nil
+	return nil, err
 }
