@@ -4,11 +4,11 @@ services:
     ports:
       - "8001:8000"
     environment:
-      - DATABASE_URL=postgres://auth:auth@auth-db:5432/authdb
+      - DATABASE_URL=postgres://auth:auth@authdb:5432/authdb
       - MASTER_KEY=admin-secreto-123
       - PORT=8000
     depends_on:
-      auth-db:
+      authdb:
         condition: service_healthy
 
   flag-service:
@@ -17,10 +17,10 @@ services:
       - "8002:8000"
     environment:
       - PORT=8000
-      - DATABASE_URL=postgres://flag:flag@flag-db:5432/flagdb
+      - DATABASE_URL=postgres://flag:flag@flagdb:5432/flagdb
       - AUTH_SERVICE_URL=http://auth-service:8000
     depends_on:
-      flag-db:
+      flagdb:
         condition: service_healthy
       auth-service:
         condition: service_started
@@ -36,10 +36,10 @@ services:
       - "8003:8000"
     environment:
       - PORT=8000
-      - DATABASE_URL=postgres://target:target@target-db:5432/targetdb
+      - DATABASE_URL=postgres://target:target@targetdb:5432/targetdb
       - AUTH_SERVICE_URL=http://auth-service:8000
     depends_on:
-      target-db:
+      targetdb:
         condition: service_healthy
       auth-service:
         condition: service_started
@@ -94,38 +94,38 @@ services:
         aws --endpoint-url=http://localstack:4566 dynamodb create-table … || true
         exec python app.py
 
-  auth-db:
+  authdb:
     image: postgres:15
     environment:
       POSTGRES_USER: auth
       POSTGRES_PASSWORD: auth
-      POSTGRES_DB: auth
+      POSTGRES_DB: authdb
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U auth"]
+      test: ["CMD-SHELL", "pg_isready -U auth -d authdb"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  flag-db:
+  flagdb:
     image: postgres:15
     environment:
       POSTGRES_USER: flag
       POSTGRES_PASSWORD: flag
-      POSTGRES_DB: flag
+      POSTGRES_DB: flagdb
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U flag"]
+      test: ["CMD-SHELL", "pg_isready -U flag -d flagdb"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  target-db:
+  targetdb:
     image: postgres:15
     environment:
       POSTGRES_USER: target
       POSTGRES_PASSWORD: target
-      POSTGRES_DB: target
+      POSTGRES_DB: targetdb
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U target"]
+      test: ["CMD-SHELL", "pg_isready -U target -d targetdb"]
       interval: 5s
       timeout: 5s
       retries: 5

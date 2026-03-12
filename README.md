@@ -59,9 +59,9 @@ COMO COMEÇAR
    - analytics-service (UP)
    - redis (UP)
    - localstack (UP)
-   - auth-db (UP)
-   - flag-db (UP)
-   - target-db (UP)
+   - authdb (UP)
+   - flagdb (UP)
+   - targetdb (UP)
 
 
 ACESSANDO OS SERVIÇOS
@@ -138,17 +138,17 @@ As variáveis de ambiente estão definidas no docker-compose.yml para cada servi
 
 Auth-service:
   - PORT=8000
-  - DATABASE_URL=postgres://auth:auth@auth-db:5432/authdb
+  - DATABASE_URL=postgres://auth:auth@authdb:5432/authdb
   - MASTER_KEY=admin-secreto-123
 
 Flag-service:
   - PORT=8000
-  - DATABASE_URL=postgres://flag:flag@flag-db:5432/flagdb
+  - DATABASE_URL=postgres://flag:flag@flagdb:5432/flagdb
   - AUTH_SERVICE_URL=http://auth-service:8000
 
 Targeting-service:
   - PORT=8000
-  - DATABASE_URL=postgres://target:target@target-db:5432/targetdb
+  - DATABASE_URL=postgres://target:target@targetdb:5432/targetdb
   - AUTH_SERVICE_URL=http://auth-service:8000
 
 Evaluation-service:
