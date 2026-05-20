@@ -2,9 +2,9 @@ name: CI - Targeting Service
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 env:
   IMAGE_NAME: targeting-service
