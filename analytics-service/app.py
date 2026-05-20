@@ -48,7 +48,7 @@ except NoCredentialsError:
     sys.exit(1)
 except Exception as e:
     log.critical(f"Erro ao inicializar o Boto3: {e}")
-    sys.exit(1)
+    sys.exit(1) 
 
 
 # --- SQS Worker ---
