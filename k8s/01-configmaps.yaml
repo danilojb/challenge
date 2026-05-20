@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: techchallenge
+data:
+  PORT: "8000"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flag-config
+  namespace: techchallenge
+data:
+  PORT: "8000"
+  AUTH_SERVICE_URL: "http://auth-service.techchallenge.svc.cluster.local:8000"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: targeting-config
+  namespace: techchallenge
+data:
+  PORT: "8000"
+  AUTH_SERVICE_URL: "http://auth-service.techchallenge.svc.cluster.local:8000"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: evaluation-config
+  namespace: techchallenge
+data:
+  PORT: "8000"
+  AWS_REGION: "us-east-1"
+  FLAG_SERVICE_URL: "http://flag-service.techchallenge.svc.cluster.local:8000"
+  TARGETING_SERVICE_URL: "http://targeting-service.techchallenge.svc.cluster.local:8000"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: analytics-config
+  namespace: techchallenge
+data:
+  PORT: "8000"
+  AWS_REGION: "us-east-1"
