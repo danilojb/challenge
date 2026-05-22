@@ -2,9 +2,9 @@ name: CI - Analytics Service
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 env:
   IMAGE_NAME: analytics-service

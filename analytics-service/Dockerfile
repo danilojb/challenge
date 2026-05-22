@@ -16,6 +16,10 @@ RUN python -m pip install --upgrade pip setuptools wheel \
 FROM python:3.11-slim
 WORKDIR /app
 
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends awscli \
+	&& rm -rf /var/lib/apt/lists/*
+
 RUN addgroup --system app && adduser --system --group app
 
 COPY --from=builder /wheels /wheels
